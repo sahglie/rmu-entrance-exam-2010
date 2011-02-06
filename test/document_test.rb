@@ -5,7 +5,7 @@ require "rubygems"
 require "contest"
 $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/../lib")
 
-require "ali_rizvi_fixed"
+require "hansen1"
 
 class DocumentTest < Test::Unit::TestCase
 
@@ -96,14 +96,13 @@ class DocumentTest < Test::Unit::TestCase
       @doc.undo
       assert_equal "Hello", @doc.contents
     end
-
   end
 
-  describe "Document#redo" do
+   describe "Document#redo" do
     
-    setup do
-      @doc.add_text "Hello World"
-    end  
+     setup do
+       @doc.add_text "Hello World"
+     end  
 
     test "can redo add_text operations" do
       @doc.add_text " Cup"
@@ -122,6 +121,25 @@ class DocumentTest < Test::Unit::TestCase
       assert_equal "Hello World", @doc.contents
     end
 
+    test "redo gets flushed after an operation" do
+      @doc.add_text " Cup"
+      assert_equal("Hello World Cup", @doc.contents)      
+      @doc.undo
+      @doc.add_text(" Butter")
+      @doc.redo
+      assert_equal("Hello World Butter", @doc.contents)
+    end
+
+    test "redo is ok" do
+      @doc.add_text(" Cup")
+      assert_equal("Hello World Cup", @doc.contents)
+      @doc.undo
+      @doc.undo
+      assert_equal("", @doc.contents)
+      @doc.redo
+      @doc.redo
+      assert_equal("Hello World Cup", @doc.contents)      
+    end
   end
 end
 
