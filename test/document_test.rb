@@ -5,7 +5,7 @@ require "rubygems"
 require "contest"
 $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/../lib")
 
-require "hansen1"
+require "hansen3"
 
 class DocumentTest < Test::Unit::TestCase
 
@@ -21,6 +21,8 @@ class DocumentTest < Test::Unit::TestCase
     test "adds text to document contents" do
       @doc.add_text("Hello Document")
 
+      @doc.contents
+      
       assert_equal "Hello Document", @doc.contents
     end
 
